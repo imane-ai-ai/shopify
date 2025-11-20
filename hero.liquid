@@ -1,0 +1,194 @@
+{% comment %}
+  Hero Section - Premium Watch Store
+{% endcomment %}
+
+<style>
+  .hero {
+    position: relative;
+    height: {% if section.settings.height == 'small' %}400px{% elsif section.settings.height == 'medium' %}600px{% else %}800px{% endif %};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+    z-index: 2;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    padding: 0 2rem;
+    animation: fadeInUp 1s ease-out;
+  }
+
+  .hero__title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 6rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    color: rgb(212, 175, 55);
+  }
+
+  .hero__subtitle {
+    font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+    margin-bottom: 3rem;
+    opacity: 0.9;
+    letter-spacing: 1px;
+  }
+
+  .hero__button {
+    display: inline-block;
+    background: rgb(212, 175, 55);
+    color: black;
+    padding: 1.5rem 4rem;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border: 2px solid rgb(212, 175, 55);
+  }
+
+  .hero__button:hover {
+    background: transparent;
+    color: rgb(212, 175, 55);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      height: {% if section.settings.height == 'small' %}300px{% elsif section.settings.height == 'medium' %}450px{% else %}600px{% endif %};
+    }
+
+    .hero__button {
+      padding: 1.2rem 3rem;
+    }
+  }
+</style>
+
+<section class="hero">
+  {% if section.settings.image %}
+    <img
+      src="{{ section.settings.image | image_url: width: 2000 }}"
+      alt="{{ section.settings.title }}"
+      class="hero__background"
+      loading="eager"
+    >
+  {% else %}
+    <div class="hero__background" style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d);"></div>
+  {% endif %}
+
+  <div class="hero__overlay"></div>
+
+  <div class="hero__content">
+    {% if section.settings.title != blank %}
+      <h1 class="hero__title">{{ section.settings.title }}</h1>
+    {% endif %}
+
+    {% if section.settings.subtitle != blank %}
+      <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+
+    {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+      <a href="{{ section.settings.button_link }}" class="hero__button">
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section Height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Découvrez l'Excellence Horlogère"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Collection Premium de Montres Suisses"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Voir la Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
